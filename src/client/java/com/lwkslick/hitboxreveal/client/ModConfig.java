@@ -31,6 +31,8 @@ public class ModConfig {
     public static float   briCrit          = 1.0f;
     public static float   briGradientTop   = 1.0f;
     public static float   closeRangeThreshold = 3.0f;
+    public static boolean critColorEnabled    = true;
+    public static boolean closeColorEnabled   = true;
     public static boolean gradientEnabled     = true;
     public static boolean perStateGradient    = false;
     public static int     colorGradientTopClose = 0xFF00FFFF;
@@ -189,6 +191,8 @@ public class ModConfig {
         float satDefault, satClose, satCrit, satGradientTop;
         float briDefault, briClose, briCrit, briGradientTop;
         float closeRangeThreshold;
+        boolean critColorEnabled;
+        boolean closeColorEnabled;
         boolean gradientEnabled;
         boolean perStateGradient;
         int colorGradientTopClose;
@@ -269,6 +273,8 @@ public class ModConfig {
             briCrit          = d.briCrit    != 0 ? d.briCrit    : 1.0f;
             briGradientTop   = d.briGradientTop != 0 ? d.briGradientTop : 1.0f;
             closeRangeThreshold = d.closeRangeThreshold != 0 ? d.closeRangeThreshold : 3.0f;
+            critColorEnabled  = d.critColorEnabled;
+            closeColorEnabled = d.closeColorEnabled;
             gradientEnabled      = d.gradientEnabled;
             perStateGradient     = d.perStateGradient;
             colorGradientTopClose = d.colorGradientTopClose != 0 ? d.colorGradientTopClose : 0xFF00FFFF;
@@ -415,6 +421,8 @@ public class ModConfig {
         d.briCrit          = briCrit;
         d.briGradientTop   = briGradientTop;
         d.closeRangeThreshold    = closeRangeThreshold;
+        d.critColorEnabled       = critColorEnabled;
+        d.closeColorEnabled      = closeColorEnabled;
         d.gradientEnabled        = gradientEnabled;
         d.perStateGradient       = perStateGradient;
         d.colorGradientTopClose  = colorGradientTopClose;

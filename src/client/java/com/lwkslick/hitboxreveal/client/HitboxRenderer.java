@@ -337,12 +337,17 @@ public class HitboxRenderer {
 
         if (!outlineOnly) {
             float fa = ModConfig.fillOpacity;
+            int topArgbRaw = ModConfig.gradientEnabled ? ModConfig.colorGradientTop : argbColor;
+            if (ModConfig.gradientFlip) { int tmp = topArgbRaw; topArgbRaw = argbColor; argbColor = tmp; }
+            float r2 = ((topArgbRaw >> 16) & 0xFF) / 255f;
+            float g2 = ((topArgbRaw >> 8)  & 0xFF) / 255f;
+            float b2 = ((topArgbRaw)       & 0xFF) / 255f;
             VertexConsumer fill = consumers.getBuffer(FILL_LAYER);
             for (Direction dir : Direction.values()) {
                 drawSide(mat, fill, dir,
                         (float)box.minX, (float)box.minY, (float)box.minZ,
                         (float)box.maxX, (float)box.maxY, (float)box.maxZ,
-                        r, g, b, fa, r, g, b, fa);
+                        r, g, b, fa, r2, g2, b2, fa);
             }
         }
 

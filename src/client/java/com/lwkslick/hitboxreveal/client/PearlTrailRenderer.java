@@ -31,7 +31,7 @@ public class PearlTrailRenderer {
     private static final int CYLINDER_SEGMENTS = 12;
 
     public static void render(WorldRenderContext context,
-                              Map<UUID, List<Vec3d>> trails) {
+                              Map<UUID, java.util.LinkedList<Vec3d>> trails) {
         if (!ModConfig.pearlTrailEnabled) return;
 
         VertexConsumerProvider consumers = context.consumers();
@@ -53,10 +53,6 @@ public class PearlTrailRenderer {
         }
 
         matrices.pop();
-
-        if (consumers instanceof VertexConsumerProvider.Immediate immediate) {
-            immediate.draw();
-        }
     }
 
     private static void renderTrail(List<Vec3d> trail, Vec3d cam, MatrixStack matrices, VertexConsumer vc) {

@@ -49,7 +49,7 @@ public class HitboxRevealClient implements ClientModInitializer {
 
 	public static final Map<UUID, Integer> revealedPlayers = new HashMap<>();
 	// Pearl trail state
-	public static final Map<UUID, List<Vec3d>> pearlTrails    = new HashMap<>();
+	public static final Map<UUID, java.util.LinkedList<Vec3d>> pearlTrails    = new HashMap<>();
 	private static final Map<UUID, Vec3d>      pearlLastPos        = new HashMap<>();
 
 	// Tracks all UUIDs currently being auto-revealed by solo auto-reveal
@@ -86,7 +86,7 @@ public class HitboxRevealClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			// ── Pearl trail tracking ──────────────────────────────────────
-			if (ModConfig.enabled && client.world != null && client.player != null) {
+			if (ModConfig.enabled && ModConfig.pearlTrailEnabled && client.world != null && client.player != null) {
 				Vec3d playerPos = new Vec3d(client.player.getX(), client.player.getY(), client.player.getZ());
 				Box searchBox = new Box(playerPos.subtract(200, 200, 200), playerPos.add(200, 200, 200));
 				List<EnderPearlEntity> pearls = client.world.getEntitiesByClass(
@@ -112,9 +112,9 @@ public class HitboxRevealClient implements ClientModInitializer {
 					Vec3d cur = new Vec3d(pearl.getX(), pearl.getY(), pearl.getZ());
 					Vec3d last = pearlLastPos.get(pid);
 					if (last != null && last.distanceTo(cur) > 0.02) {
-						List<Vec3d> trail = pearlTrails.computeIfAbsent(pid, k -> new ArrayList<>());
+						java.util.LinkedList<Vec3d> trail = pearlTrails.computeIfAbsent(pid, k -> new java.util.LinkedList<>());
 						trail.add(cur);
-						if (trail.size() > ModConfig.pearlTrailMaxPoints) trail.remove(0);
+						if (trail.size() > ModConfig.pearlTrailMaxPoints) trail.removeFirst();
 					}
 					pearlLastPos.put(pid, cur);
 				}
@@ -206,8 +206,8 @@ public class HitboxRevealClient implements ClientModInitializer {
 
 				int color;
 				if (isSelf) color = ModConfig.colorDefault;
-				else if (critReady) color = ModConfig.colorCrit;
-				else if (dist <= ModConfig.closeRangeThreshold) color = ModConfig.colorClose;
+				else if (ModConfig.critColorEnabled && critReady) color = ModConfig.colorCrit;
+				else if (ModConfig.closeColorEnabled && dist <= ModConfig.closeRangeThreshold) color = ModConfig.colorClose;
 				else color = ModConfig.colorDefault;
 
 				float alpha = 1.0f;
@@ -238,7 +238,9 @@ public class HitboxRevealClient implements ClientModInitializer {
 			// Entity hitboxes
 			boolean anyEntityEnabled = ModConfig.pearlEnabled || ModConfig.arrowEnabled || ModConfig.windChargeEnabled || ModConfig.tntMinecartEnabled || ModConfig.fireballEnabled || ModConfig.boatEnabled || ModConfig.spectralArrowEnabled || ModConfig.tridentEnabled || ModConfig.snowballEnabled || ModConfig.eggEnabled || ModConfig.potionEnabled || ModConfig.witherSkullEnabled || ModConfig.shulkerBulletEnabled || ModConfig.endCrystalEnabled || ModConfig.tntEnabled || ModConfig.fireworkEnabled || ModConfig.areaEffectCloudEnabled || ModConfig.evokerFangsEnabled || ModConfig.eyeOfEnderEnabled || ModConfig.fishingBobberEnabled;
 			if (anyEntityEnabled) {
-			for (net.minecraft.entity.Entity entity : client.world.getEntities()) {
+				Vec3d _ep = new Vec3d(client.player.getX(), client.player.getY(), client.player.getZ());
+				Box _eb = new Box(_ep.subtract(64,64,64), _ep.add(64,64,64));
+				for (net.minecraft.entity.Entity entity : client.world.getEntitiesByClass(net.minecraft.entity.Entity.class, _eb, e -> !e.isRemoved())) {
 				if (ModConfig.entityOnlyEnemy) {
 					boolean isTntCart = entity instanceof TntMinecartEntity;
 					boolean isBoat = entity instanceof BoatEntity || entity instanceof ChestBoatEntity;
