@@ -6,9 +6,10 @@ import net.minecraft.text.Text;
 
 public class UpdateChecker {
 
-    private static final String MOD_ID = "hitbox-reveal";
+    private static final String MOD_ID        = "hitboxreveal";
+    private static final String MODRINTH_SLUG = "hitbox-reveal";
     private static final String API_URL =
-            "https://api.modrinth.com/v2/project/" + MOD_ID + "/version";
+            "https://api.modrinth.com/v2/project/" + MODRINTH_SLUG + "/version";
 
     public static void checkAsync() {
         Thread thread = new Thread(() -> {
