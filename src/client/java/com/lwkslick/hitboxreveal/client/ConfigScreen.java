@@ -44,6 +44,12 @@ public class ConfigScreen {
                                         .binding(true, () -> ModConfig.outline, v -> ModConfig.outline = v)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Reveal all hitboxes"))
+                                        .description(OptionDescription.of(Text.literal("Permanently reveal every player in the world. Ignores range, count, and hit requirement. Toggle off to hide them.")))
+                                        .binding(false, () -> ModConfig.revealAll, v -> ModConfig.revealAll = v)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
                                 .build())
 
                         .group(OptionGroup.createBuilder()

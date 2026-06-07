@@ -149,6 +149,7 @@ public class ModConfig {
     public static float   fishingBobberSizeMulti   = 1.0f;
     public static boolean fishingBobberOutlineOnly = false;
     // Solo auto-reveal max players
+    public static boolean revealAll           = false;
     public static int     soloAutoMaxPlayers  = 1;
     // Sound
     public static boolean hitSound        = true;
@@ -229,7 +230,7 @@ public class ModConfig {
         boolean evokerFangsEnabled; int colorEvokerFangs; float evokerFangsSizeMulti; boolean evokerFangsOutlineOnly;
         boolean eyeOfEnderEnabled; int colorEyeOfEnder; float eyeOfEnderSizeMulti; boolean eyeOfEnderOutlineOnly;
         boolean fishingBobberEnabled; int colorFishingBobber; float fishingBobberSizeMulti; boolean fishingBobberOutlineOnly;
-        int soloAutoMaxPlayers;
+        boolean revealAll; int soloAutoMaxPlayers;
         boolean hitSound;
         float hitSoundVolume;
         java.util.List<String> friends;
@@ -372,7 +373,7 @@ public class ModConfig {
             fishingBobberEnabled     = d.fishingBobberEnabled;
             colorFishingBobber       = d.colorFishingBobber != 0 ? d.colorFishingBobber : 0xFF88CCFF;
             fishingBobberSizeMulti   = d.fishingBobberSizeMulti != 0 ? d.fishingBobberSizeMulti : 1.0f;
-            fishingBobberOutlineOnly = d.fishingBobberOutlineOnly;
+            fishingBobberOutlineOnly = d.fishingBobberOutlineOnly; revealAll           = d.revealAll;
             soloAutoMaxPlayers  = d.soloAutoMaxPlayers != 0 ? d.soloAutoMaxPlayers : 1;
             hitSound            = d.hitSound;
             hitSoundVolume      = d.hitSoundVolume != 0 ? d.hitSoundVolume : 0.5f;
@@ -521,6 +522,7 @@ public class ModConfig {
         d.colorFishingBobber       = colorFishingBobber;
         d.fishingBobberSizeMulti   = fishingBobberSizeMulti;
         d.fishingBobberOutlineOnly = fishingBobberOutlineOnly;
+        d.revealAll              = revealAll;
         d.soloAutoMaxPlayers     = soloAutoMaxPlayers;
         d.hitSound               = hitSound;
         d.hitSoundVolume         = hitSoundVolume;

@@ -170,6 +170,13 @@ public class HitboxRevealClient implements ClientModInitializer {
 				}
 			}
 
+			if (ModConfig.revealAll && ModConfig.enabled && client.world != null) {
+				for (net.minecraft.entity.player.PlayerEntity p : client.world.getPlayers()) {
+					if (p != client.player && !ModConfig.friends.contains(p.getName().getString()))
+						revealedPlayers.put(p.getUuid(), Integer.MAX_VALUE);
+				}
+			}
+
 			if (!ModConfig.permanent) {
 				Iterator<Map.Entry<UUID, Integer>> it = revealedPlayers.entrySet().iterator();
 				while (it.hasNext()) {
