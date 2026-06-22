@@ -50,7 +50,7 @@ public class HitboxRevealClient implements ClientModInitializer {
 	public static final Map<UUID, Integer> revealedPlayers = new HashMap<>();
 	// Pearl trail state
 	public static final Map<UUID, java.util.LinkedList<Vec3d>> pearlTrails    = new HashMap<>();
-	private static final Map<UUID, Vec3d>      pearlLastPos        = new HashMap<>();
+	public  static final Map<UUID, Long>       pearlLandedAt       = new HashMap<>();
 
 	// Tracks all UUIDs currently being auto-revealed by solo auto-reveal
 	public static final Set<UUID> soloAutoTargets = new HashSet<>();
@@ -93,12 +93,20 @@ public class HitboxRevealClient implements ClientModInitializer {
 						EnderPearlEntity.class, searchBox, e -> true);
 
 				// Remove trails for pearls that have landed
+				long nowMs = System.currentTimeMillis();
 				pearlTrails.keySet().removeIf(id -> {
 					boolean stillActive = pearls.stream().anyMatch(p -> p.getUuid().equals(id) && !p.isRemoved());
 					if (!stillActive) {
 						pearlLastPos.remove(id);
-						return true;
+						pearlLandedAt.putIfAbsent(id, nowMs);
+						long landedTime = pearlLandedAt.get(id);
+						if (nowMs - landedTime >= ModConfig.pearlTrailPersistMs) {
+							pearlLandedAt.remove(id);
+							return true;
+						}
+						return false;
 					}
+					pearlLandedAt.remove(id);
 					return false;
 				});
 
@@ -306,6 +314,7 @@ public class HitboxRevealClient implements ClientModInitializer {
 			revealedPlayers.clear();
 			pearlTrails.clear();
 			pearlLastPos.clear();
+			pearlLandedAt.clear();
 			soloAutoTargets.clear();
 		});
 
