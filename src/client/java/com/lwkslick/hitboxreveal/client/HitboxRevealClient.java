@@ -48,12 +48,10 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 public class HitboxRevealClient implements ClientModInitializer {
 
 	public static final Map<UUID, Integer> revealedPlayers = new HashMap<>();
-	// Pearl trail state
-	public static final Map<UUID, java.util.LinkedList<Vec3d>> pearlTrails    = new HashMap<>();
-	public  static final Map<UUID, Long>       pearlLandedAt       = new HashMap<>();
 
 	// Tracks all UUIDs currently being auto-revealed by solo auto-reveal
 	public static final Set<UUID> soloAutoTargets = new HashSet<>();
+	public static final Set<UUID> revealAllTargets = new HashSet<>();
 	private static int soloAutoLingerTimer = 0;
 
 	private static KeyBinding toggleKey;
@@ -85,49 +83,6 @@ public class HitboxRevealClient implements ClientModInitializer {
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			// ── Pearl trail tracking ──────────────────────────────────────
-			if (ModConfig.enabled && ModConfig.pearlTrailEnabled && client.world != null && client.player != null) {
-				Vec3d playerPos = new Vec3d(client.player.getX(), client.player.getY(), client.player.getZ());
-				Box searchBox = new Box(playerPos.subtract(200, 200, 200), playerPos.add(200, 200, 200));
-				List<EnderPearlEntity> pearls = client.world.getEntitiesByClass(
-						EnderPearlEntity.class, searchBox, e -> true);
-
-				// Remove trails for pearls that have landed
-				long nowMs = System.currentTimeMillis();
-				pearlTrails.keySet().removeIf(id -> {
-					boolean stillActive = pearls.stream().anyMatch(p -> p.getUuid().equals(id) && !p.isRemoved());
-					if (!stillActive) {
-						pearlLastPos.remove(id);
-						pearlLandedAt.putIfAbsent(id, nowMs);
-						long landedTime = pearlLandedAt.get(id);
-						if (nowMs - landedTime >= ModConfig.pearlTrailPersistMs) {
-							pearlLandedAt.remove(id);
-							return true;
-						}
-						return false;
-					}
-					pearlLandedAt.remove(id);
-					return false;
-				});
-
-				// Track active pearls
-				for (EnderPearlEntity pearl : pearls) {
-					if (pearl.isRemoved()) continue;
-					boolean isOwn = client.player.equals(pearl.getOwner());
-					if (isOwn && !ModConfig.pearlTrailShowOwn) continue;
-
-					UUID pid = pearl.getUuid();
-					Vec3d cur = new Vec3d(pearl.getX(), pearl.getY(), pearl.getZ());
-					Vec3d last = pearlLastPos.get(pid);
-					if (last != null && last.distanceTo(cur) > 0.02) {
-						java.util.LinkedList<Vec3d> trail = pearlTrails.computeIfAbsent(pid, k -> new java.util.LinkedList<>());
-						trail.add(cur);
-						if (trail.size() > ModConfig.pearlTrailMaxPoints) trail.removeFirst();
-					}
-					pearlLastPos.put(pid, cur);
-				}
-			}
-			// ── End pearl trail tracking ──────────────────────────────────
 			while (toggleKey.wasPressed()) {
 				ModConfig.enabled = !ModConfig.enabled;
 				if (client.player != null) {
@@ -176,13 +131,21 @@ public class HitboxRevealClient implements ClientModInitializer {
 						}
 					}
 				}
+			} else if (!soloAutoTargets.isEmpty()) {
+				for (UUID id : soloAutoTargets) revealedPlayers.remove(id);
+				soloAutoTargets.clear();
 			}
 
 			if (ModConfig.revealAll && ModConfig.enabled && client.world != null) {
 				for (net.minecraft.entity.player.PlayerEntity p : client.world.getPlayers()) {
-					if (p != client.player && !ModConfig.friends.contains(p.getName().getString()))
+					if (p != client.player && !ModConfig.friends.contains(p.getName().getString())) {
 						revealedPlayers.put(p.getUuid(), Integer.MAX_VALUE);
+						revealAllTargets.add(p.getUuid());
+					}
 				}
+			} else if (!revealAllTargets.isEmpty()) {
+				for (UUID id : revealAllTargets) revealedPlayers.remove(id);
+				revealAllTargets.clear();
 			}
 
 			if (!ModConfig.permanent) {
@@ -240,8 +203,6 @@ public class HitboxRevealClient implements ClientModInitializer {
 			}
 
 			// Range indicator
-			// Pearl trail renderer
-			PearlTrailRenderer.render(context, pearlTrails);
 			if (ModConfig.rangeIndicator && client.player != null) {
 				float pulseAlpha = 1.0f;
 				if (ModConfig.soloAutoReveal && ModConfig.soloAutoRangeIndicatorPulse && !soloAutoTargets.isEmpty()) {
@@ -312,10 +273,8 @@ public class HitboxRevealClient implements ClientModInitializer {
 
 		net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, client2) -> {
 			revealedPlayers.clear();
-			pearlTrails.clear();
-			pearlLastPos.clear();
-			pearlLandedAt.clear();
 			soloAutoTargets.clear();
+			revealAllTargets.clear();
 		});
 
 		UpdateChecker.checkAsync();
