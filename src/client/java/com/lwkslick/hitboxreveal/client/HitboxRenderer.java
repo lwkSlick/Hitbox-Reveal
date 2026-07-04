@@ -180,7 +180,7 @@ public class HitboxRenderer {
         float r = ((argb >> 16) & 0xFF) / 255f;
         float g = ((argb >> 8)  & 0xFF) / 255f;
         float b = ((argb)       & 0xFF) / 255f;
-        float radius = ModConfig.closeRangeThreshold;
+        float radius = ModConfig.soloAutoRange;
         int segments = 64;
 
         matrices.push();
@@ -301,7 +301,6 @@ public class HitboxRenderer {
 
     private static int resolveGradientTop(int argbColor) {
         if ((argbColor & 0x00FFFFFF) == (ModConfig.colorClose & 0x00FFFFFF)) return ModConfig.colorGradientTopClose;
-        if ((argbColor & 0x00FFFFFF) == (ModConfig.colorCrit  & 0x00FFFFFF)) return ModConfig.colorGradientTopCrit;
         return ModConfig.colorGradientTop;
     }
 

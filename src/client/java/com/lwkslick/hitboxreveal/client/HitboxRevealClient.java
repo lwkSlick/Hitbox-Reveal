@@ -178,14 +178,14 @@ public class HitboxRevealClient implements ClientModInitializer {
 				if (isSelf && (!ModConfig.selfReveal || !isThirdPerson || !revealedPlayers.containsKey(player.getUuid()))) continue;
 				if (!revealedPlayers.containsKey(player.getUuid())) continue;
 
-				boolean critReady = !player.isOnGround()
-						&& client.player.getAttackCooldownProgress(0f) >= 1.0f;
-				double dist = client.player.distanceTo(player);
+				boolean justHit = player.hurtTime > 0;
+				boolean smartTargeted = client.crosshairTarget instanceof net.minecraft.util.hit.EntityHitResult ehr
+						&& ehr.getEntity() == player;
 
 				int color;
 				if (isSelf) color = ModConfig.colorDefault;
-				else if (ModConfig.critColorEnabled && critReady) color = ModConfig.colorCrit;
-				else if (ModConfig.closeColorEnabled && dist <= ModConfig.closeRangeThreshold) color = ModConfig.colorClose;
+				else if (justHit) color = ModConfig.colorDefault;
+				else if (ModConfig.closeColorEnabled && smartTargeted) color = ModConfig.colorClose;
 				else color = ModConfig.colorDefault;
 
 				float alpha = 1.0f;
