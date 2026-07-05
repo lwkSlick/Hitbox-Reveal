@@ -202,15 +202,6 @@ public class HitboxRevealClient implements ClientModInitializer {
 				HitboxRenderer.renderBox(context, player, color, alpha);
 			}
 
-			// Range indicator
-			if (ModConfig.rangeIndicator && client.player != null) {
-				float pulseAlpha = 1.0f;
-				if (ModConfig.soloAutoReveal && ModConfig.soloAutoRangeIndicatorPulse && !soloAutoTargets.isEmpty()) {
-					pulseAlpha = 0.5f + 0.5f * (float) Math.sin(System.currentTimeMillis() / 300.0 * Math.PI * 2);
-				}
-				HitboxRenderer.renderRangeCircle(context, client.player, pulseAlpha);
-			}
-
 			// Entity hitboxes
 			boolean anyEntityEnabled = ModConfig.pearlEnabled || ModConfig.arrowEnabled || ModConfig.windChargeEnabled || ModConfig.tntMinecartEnabled || ModConfig.fireballEnabled || ModConfig.boatEnabled || ModConfig.spectralArrowEnabled || ModConfig.tridentEnabled || ModConfig.snowballEnabled || ModConfig.eggEnabled || ModConfig.potionEnabled || ModConfig.witherSkullEnabled || ModConfig.shulkerBulletEnabled || ModConfig.endCrystalEnabled || ModConfig.tntEnabled || ModConfig.fireworkEnabled || ModConfig.areaEffectCloudEnabled || ModConfig.evokerFangsEnabled || ModConfig.eyeOfEnderEnabled || ModConfig.fishingBobberEnabled;
 			if (anyEntityEnabled) {

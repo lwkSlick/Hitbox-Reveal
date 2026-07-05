@@ -36,8 +36,6 @@ public class ModConfig {
     public static float   pulseSpeed        = 1.0f;
     public static boolean cornerOnly        = false;
     public static float   cornerLength      = 0.25f;
-    public static boolean rangeIndicator    = false;
-    public static int     colorRangeIndicator = 0xFF00FFFF;
     public static boolean selfReveal        = false;
     public static boolean selfRevealPermanent = false;
     // Entities tab
@@ -155,7 +153,6 @@ public class ModConfig {
     public static boolean soloAutoGracePulse    = true;
     public static int     soloAutoLinger        = 40;
     public static boolean soloAutoActionBar     = true;
-    public static boolean soloAutoRangeIndicatorPulse = true;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH =
@@ -185,8 +182,6 @@ public class ModConfig {
         float pulseSpeed;
         boolean cornerOnly;
         float cornerLength;
-        boolean rangeIndicator;
-        int colorRangeIndicator;
         boolean selfReveal;
         boolean selfRevealPermanent;
         boolean entityOnlyEnemy;
@@ -221,7 +216,6 @@ public class ModConfig {
         boolean soloAutoGracePulse;
         int     soloAutoLinger;
         boolean soloAutoActionBar;
-        boolean soloAutoRangeIndicatorPulse;
     }
 
     public static void load() {
@@ -258,8 +252,6 @@ public class ModConfig {
             pulseSpeed           = d.pulseSpeed != 0 ? d.pulseSpeed : 1.0f;
             cornerOnly           = d.cornerOnly;
             cornerLength         = d.cornerLength != 0 ? d.cornerLength : 0.25f;
-            rangeIndicator       = d.rangeIndicator;
-            colorRangeIndicator  = d.colorRangeIndicator != 0 ? d.colorRangeIndicator : 0xFF00FFFF;
             selfReveal           = d.selfReveal;
             selfRevealPermanent  = d.selfRevealPermanent;
             entityOnlyEnemy       = d.entityOnlyEnemy;
@@ -356,7 +348,6 @@ public class ModConfig {
             soloAutoGracePulse           = d.soloAutoGracePulse;
             soloAutoLinger               = d.soloAutoLinger != 0 ? d.soloAutoLinger : 40;
             soloAutoActionBar            = d.soloAutoActionBar;
-            soloAutoRangeIndicatorPulse  = d.soloAutoRangeIndicatorPulse;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -392,8 +383,6 @@ public class ModConfig {
         d.pulseSpeed             = pulseSpeed;
         d.cornerOnly             = cornerOnly;
         d.cornerLength           = cornerLength;
-        d.rangeIndicator         = rangeIndicator;
-        d.colorRangeIndicator    = colorRangeIndicator;
         d.selfReveal             = selfReveal;
         d.selfRevealPermanent    = selfRevealPermanent;
         d.entityOnlyEnemy        = entityOnlyEnemy;
@@ -491,7 +480,6 @@ public class ModConfig {
         d.soloAutoGracePulse           = soloAutoGracePulse;
         d.soloAutoLinger               = soloAutoLinger;
         d.soloAutoActionBar            = soloAutoActionBar;
-        d.soloAutoRangeIndicatorPulse  = soloAutoRangeIndicatorPulse;
         try (Writer w = new FileWriter(CONFIG_PATH.toFile())) {
             GSON.toJson(d, w);
         } catch (Exception e) {

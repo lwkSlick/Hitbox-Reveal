@@ -165,6 +165,7 @@ public class HitboxRenderer {
         matrices.pop();
     }
 
+<<<<<<< Updated upstream
     public static void renderRangeCircle(WorldRenderContext context, PlayerEntity player, float alpha) {
         VertexConsumerProvider consumers = context.consumers();
         if (consumers == null) return;
@@ -201,6 +202,8 @@ public class HitboxRenderer {
         matrices.pop();
     }
 
+=======
+>>>>>>> Stashed changes
     private static void drawSide(Matrix4f mat, VertexConsumer buf, Direction side,
                                  float minX, float minY, float minZ,
                                  float maxX, float maxY, float maxZ,
