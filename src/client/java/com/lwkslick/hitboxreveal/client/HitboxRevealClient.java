@@ -165,9 +165,12 @@ public class HitboxRevealClient implements ClientModInitializer {
 
 			long now = System.currentTimeMillis();
 
+			boolean isThirdPerson = !client.options.getPerspective().isFirstPerson();
+			net.minecraft.entity.Entity crosshairEntity = client.crosshairTarget instanceof net.minecraft.util.hit.EntityHitResult ehr
+					? ehr.getEntity() : null;
+
 			for (PlayerEntity player : client.world.getPlayers()) {
 				boolean isSelf = player == client.player;
-				boolean isThirdPerson = !client.options.getPerspective().isFirstPerson();
 
 				if (isSelf && ModConfig.selfReveal && ModConfig.selfRevealPermanent) {
 					if (!isThirdPerson) continue;
@@ -179,8 +182,7 @@ public class HitboxRevealClient implements ClientModInitializer {
 				if (!revealedPlayers.containsKey(player.getUuid())) continue;
 
 				boolean justHit = player.hurtTime > 0;
-				boolean smartTargeted = client.crosshairTarget instanceof net.minecraft.util.hit.EntityHitResult ehr
-						&& ehr.getEntity() == player;
+				boolean smartTargeted = crosshairEntity == player;
 
 				int color;
 				if (isSelf) color = ModConfig.colorDefault;
