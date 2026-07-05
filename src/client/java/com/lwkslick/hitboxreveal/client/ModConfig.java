@@ -21,12 +21,6 @@ public class ModConfig {
     public static int     colorGradientTop = 0xFF00FFFF;   // top gradient color (ARGB)
     public static float   lookVectorLength = 2.0f;
     public static float   lookVectorWidth  = 2.0f;
-    public static float   satDefault       = 1.0f;
-    public static float   satClose         = 1.0f;
-    public static float   satGradientTop   = 1.0f;
-    public static float   briDefault       = 1.0f;
-    public static float   briClose         = 1.0f;
-    public static float   briGradientTop   = 1.0f;
     public static boolean closeColorEnabled   = true;
     public static boolean gradientEnabled     = true;
     public static boolean perStateGradient    = false;
@@ -143,14 +137,10 @@ public class ModConfig {
     // Solo auto-reveal max players
     public static boolean revealAll           = false;
     public static int     soloAutoMaxPlayers  = 1;
-    // Sound
-    public static boolean hitSound        = true;
-    public static float   hitSoundVolume  = 0.5f;
     // Friends (ignore list)
     public static java.util.List<String> friends = new java.util.ArrayList<>();
     public static boolean soloAutoReveal        = false;
     public static float   soloAutoRange         = 150.0f;
-    public static boolean soloAutoGracePulse    = true;
     public static int     soloAutoLinger        = 40;
     public static boolean soloAutoActionBar     = true;
 
@@ -171,8 +161,6 @@ public class ModConfig {
         int colorGradientTop;
         float lookVectorLength;
         float lookVectorWidth;
-        float satDefault, satClose, satGradientTop;
-        float briDefault, briClose, briGradientTop;
         boolean closeColorEnabled;
         boolean gradientEnabled;
         boolean perStateGradient;
@@ -208,12 +196,9 @@ public class ModConfig {
         boolean eyeOfEnderEnabled; int colorEyeOfEnder; float eyeOfEnderSizeMulti; boolean eyeOfEnderOutlineOnly;
         boolean fishingBobberEnabled; int colorFishingBobber; float fishingBobberSizeMulti; boolean fishingBobberOutlineOnly;
         boolean revealAll; int soloAutoMaxPlayers;
-        boolean hitSound;
-        float hitSoundVolume;
         java.util.List<String> friends;
         boolean soloAutoReveal;
         float   soloAutoRange;
-        boolean soloAutoGracePulse;
         int     soloAutoLinger;
         boolean soloAutoActionBar;
     }
@@ -237,12 +222,6 @@ public class ModConfig {
             colorGradientTop  = d.colorGradientTop != 0 ? d.colorGradientTop : 0xFF00FFFF;
             lookVectorLength  = d.lookVectorLength != 0 ? d.lookVectorLength : 2.0f;
             lookVectorWidth   = d.lookVectorWidth  != 0 ? d.lookVectorWidth  : 2.0f;
-            satDefault       = d.satDefault != 0 ? d.satDefault : 1.0f;
-            satClose         = d.satClose   != 0 ? d.satClose   : 1.0f;
-            satGradientTop   = d.satGradientTop != 0 ? d.satGradientTop : 1.0f;
-            briDefault       = d.briDefault != 0 ? d.briDefault : 1.0f;
-            briClose         = d.briClose   != 0 ? d.briClose   : 1.0f;
-            briGradientTop   = d.briGradientTop != 0 ? d.briGradientTop : 1.0f;
             closeColorEnabled = d.closeColorEnabled;
             gradientEnabled      = d.gradientEnabled;
             perStateGradient     = d.perStateGradient;
@@ -340,12 +319,9 @@ public class ModConfig {
             fishingBobberSizeMulti   = d.fishingBobberSizeMulti != 0 ? d.fishingBobberSizeMulti : 1.0f;
             fishingBobberOutlineOnly = d.fishingBobberOutlineOnly; revealAll           = d.revealAll;
             soloAutoMaxPlayers  = d.soloAutoMaxPlayers != 0 ? d.soloAutoMaxPlayers : 1;
-            hitSound            = d.hitSound;
-            hitSoundVolume      = d.hitSoundVolume != 0 ? d.hitSoundVolume : 0.5f;
             friends             = d.friends != null ? d.friends : new java.util.ArrayList<>();
             soloAutoReveal               = d.soloAutoReveal;
             soloAutoRange                = d.soloAutoRange != 0 ? d.soloAutoRange : 150.0f;
-            soloAutoGracePulse           = d.soloAutoGracePulse;
             soloAutoLinger               = d.soloAutoLinger != 0 ? d.soloAutoLinger : 40;
             soloAutoActionBar            = d.soloAutoActionBar;
         } catch (Exception e) {
@@ -368,12 +344,6 @@ public class ModConfig {
         d.colorGradientTop = colorGradientTop;
         d.lookVectorLength = lookVectorLength;
         d.lookVectorWidth  = lookVectorWidth;
-        d.satDefault       = satDefault;
-        d.satClose         = satClose;
-        d.satGradientTop   = satGradientTop;
-        d.briDefault       = briDefault;
-        d.briClose         = briClose;
-        d.briGradientTop   = briGradientTop;
         d.closeColorEnabled      = closeColorEnabled;
         d.gradientEnabled        = gradientEnabled;
         d.perStateGradient       = perStateGradient;
@@ -472,12 +442,9 @@ public class ModConfig {
         d.fishingBobberOutlineOnly = fishingBobberOutlineOnly;
         d.revealAll              = revealAll;
         d.soloAutoMaxPlayers     = soloAutoMaxPlayers;
-        d.hitSound               = hitSound;
-        d.hitSoundVolume         = hitSoundVolume;
         d.friends                = friends;
         d.soloAutoReveal               = soloAutoReveal;
         d.soloAutoRange                = soloAutoRange;
-        d.soloAutoGracePulse           = soloAutoGracePulse;
         d.soloAutoLinger               = soloAutoLinger;
         d.soloAutoActionBar            = soloAutoActionBar;
         try (Writer w = new FileWriter(CONFIG_PATH.toFile())) {
