@@ -165,45 +165,6 @@ public class HitboxRenderer {
         matrices.pop();
     }
 
-<<<<<<< Updated upstream
-    public static void renderRangeCircle(WorldRenderContext context, PlayerEntity player, float alpha) {
-        VertexConsumerProvider consumers = context.consumers();
-        if (consumers == null) return;
-
-        MinecraftClient client = MinecraftClient.getInstance();
-        MatrixStack matrices = context.matrices();
-        Vec3d cam = client.gameRenderer.getCamera().getCameraPos();
-
-        float tickProgress = client.getRenderTickCounter().getTickProgress(false);
-        Vec3d pos = player.getLerpedPos(tickProgress).subtract(cam);
-
-        int argb = ModConfig.colorRangeIndicator;
-        float r = ((argb >> 16) & 0xFF) / 255f;
-        float g = ((argb >> 8)  & 0xFF) / 255f;
-        float b = ((argb)       & 0xFF) / 255f;
-        float radius = ModConfig.soloAutoRange;
-        int segments = 64;
-
-        matrices.push();
-        Matrix4f mat = matrices.peek().getPositionMatrix();
-        VertexConsumer buf = consumers.getBuffer(RenderLayers.LINES);
-
-        float y = (float)(pos.y);
-        for (int i = 0; i < segments; i++) {
-            double a1 = 2 * Math.PI * i / segments;
-            double a2 = 2 * Math.PI * (i + 1) / segments;
-            float x1 = (float)(pos.x + Math.cos(a1) * radius);
-            float z1 = (float)(pos.z + Math.sin(a1) * radius);
-            float x2 = (float)(pos.x + Math.cos(a2) * radius);
-            float z2 = (float)(pos.z + Math.sin(a2) * radius);
-            drawLine(buf, mat, x1, y, z1, x2, y, z2, r, g, b, alpha, 1.0f);
-        }
-
-        matrices.pop();
-    }
-
-=======
->>>>>>> Stashed changes
     private static void drawSide(Matrix4f mat, VertexConsumer buf, Direction side,
                                  float minX, float minY, float minZ,
                                  float maxX, float maxY, float maxZ,
